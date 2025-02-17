@@ -1,0 +1,24 @@
+#include <SoftwareSerial.h>
+
+SoftwareSerial BTSerial(10, 11); // RX, TX
+
+const int relayPin = 8; // Pin de contrôle du relais
+
+void setup() {
+  pinMode(relayPin, OUTPUT);
+  BTSerial.begin(9600); // Démarrer la communication série avec le module Bluetooth
+  Serial.begin(9600); // Démarrer la communication série pour le moniteur
+}
+
+void loop() {
+  if (BTSerial.available()) {
+    char command = BTSerial.read(); // Lire la commande envoyée par le smartphone
+    Serial.println(command); // Afficher la commande dans le moniteur série
+
+    if (command == '1') {
+      digitalWrite(relayPin, HIGH); // Allumer la lampe
+    } else if (command == '0') {
+      digitalWrite(relayPin, LOW); // Éteindre la lampe
+    }
+  }
+}
